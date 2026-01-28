@@ -1,0 +1,37 @@
+version: 0.2
+
+env:
+  variables:
+    APP_NAME: my-java-app
+    S3_BUCKET: my-build-artifacts-bucket   # change this
+    S3_PATH: java-app-builds               # folder inside bucket
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo "Java version:"
+      - java -version
+      - mvn -version
+
+  pre_build:
+    commands:
+      - echo "Cleaning project..."
+      - mvn clean
+
+  build:
+    commands:
+      - echo "Packaging application..."
+      - mvn package -DskipTests
+
+  post_build:
+    commands:
+      - echo "Uploading JAR to S3..."
+      - aws s3 cp target/*.jar s3://$S3_BUCKET/$S3_PATH/
+      - echo "Upload complete"
+
+artifacts:
+  files:
+    - target/*.jar
+  discard-paths: yes
