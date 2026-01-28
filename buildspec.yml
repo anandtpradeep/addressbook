@@ -30,7 +30,3 @@ phases:
       - echo "Uploading JAR to S3..."
       - echo "Upload complete"
 
-artifacts:
-  files:
-    - target/*.jar
-  name: java-build-artifact
