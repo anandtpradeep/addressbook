@@ -28,10 +28,9 @@ phases:
   post_build:
     commands:
       - echo "Uploading JAR to S3..."
-      - aws s3 cp target/*.jar s3://$S3_BUCKET/$S3_PATH/
       - echo "Upload complete"
 
 artifacts:
   files:
     - target/*.jar
-  discard-paths: yes
+  name: java-build-artifact
